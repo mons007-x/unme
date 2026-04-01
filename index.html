@@ -1,0 +1,272 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Ask for Nirvana</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --bg-card: #ffffff;
+            --text-main: #333333;
+            --text-sub: #666666;
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden; /* Prevent scroll during button jumping */
+        }
+
+        .container {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 3rem 2rem;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 32px;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .heart {
+            display: inline-block;
+            font-size: 48px;
+            margin: 1rem 0;
+            animation: heartBeat 1.2s ease-in-out infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.25); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+            60% { transform: scale(1); }
+        }
+
+        p {
+            font-size: 18px;
+            color: var(--text-sub);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .name {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+            position: relative;
+            min-height: 50px;
+        }
+
+        button {
+            padding: 14px 36px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            outline: none;
+            touch-action: manipulation;
+        }
+
+        .yes-btn {
+            background-color: var(--success);
+            color: white;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.1);
+            background-color: #43a047;
+        }
+
+        .yes-btn:active {
+            transform: scale(0.95);
+        }
+
+        .no-btn {
+            background-color: #f8f9fa;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            position: relative;
+            z-index: 5;
+        }
+
+        .response {
+            margin-top: 2rem;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 1.25rem;
+            border-radius: 12px;
+            border: 1px solid #c8e6c9;
+            font-size: 18px;
+            font-weight: 600;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .reject-message {
+            background: #fff3f3;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid #ffcdd2;
+            font-size: 16px;
+            animation: popIn 0.4s ease-out;
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Floating decoration elements */
+        .decoration {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.5;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hey <span class="name">Nirvana</span></h1>
+        <div class="heart">❤️</div>
+        <p>
+            Life is more beautiful when spent with someone special. <br>
+            Would you like to go on a date with me?
+        </p>
+        
+        <div class="buttons-container">
+            <button class="yes-btn" id="yesBtn" onclick="handleYes()">Yes! ✨</button>
+            <button class="no-btn" id="noBtn" onmouseover="handleNoMove()" onclick="handleNoMove()">No</button>
+        </div>
+
+        <div class="response" id="responseDiv"></div>
+    </div>
+
+    <script>
+        let clickCount = 0;
+
+        function handleYes() {
+            const responseDiv = document.getElementById('responseDiv');
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+
+            responseDiv.innerHTML = `
+                <div class="success-message">
+                    Amazing! You've made me the happiest! ❤️💍✨
+                </div>
+            `;
+            
+            yesBtn.disabled = true;
+            noBtn.style.display = 'none';
+            
+            // Create some celebration confetti effect (simple emoji float)
+            for(let i=0; i<15; i++) {
+                createFloatingEmoji('💖');
+            }
+        }
+
+        function handleNoMove() {
+            const noBtn = document.getElementById('noBtn');
+            const responseDiv = document.getElementById('responseDiv');
+            
+            clickCount++;
+
+            // Move the button away
+            // Calculate random positions within a reasonable range
+            const maxX = window.innerWidth / 3;
+            const maxY = window.innerHeight / 3;
+            
+            const randomX = (Math.random() - 0.5) * maxX;
+            const randomY = (Math.random() - 0.5) * maxY;
+            
+            noBtn.style.transition = 'transform 0.2s cubic-bezier(0.2, 0, 0.2, 1)';
+            noBtn.style.position = 'relative';
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            
+            // Show messages as they try harder
+            if (clickCount === 3) {
+                responseDiv.innerHTML = `<div class="reject-message">Are you sure? 🥺</div>`;
+            } else if (clickCount === 6) {
+                responseDiv.innerHTML = `<div class="reject-message">I'll be really nice! I promise! 🌹</div>`;
+            } else if (clickCount > 8) {
+                responseDiv.innerHTML = `<div class="reject-message">Think about the food we'll eat! 🍕🍰</div>`;
+            }
+        }
+
+        function createFloatingEmoji(emoji) {
+            const span = document.createElement('span');
+            span.innerHTML = emoji;
+            span.className = 'decoration';
+            span.style.left = Math.random() * 100 + 'vw';
+            span.style.top = '110vh';
+            span.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            document.body.appendChild(span);
+
+            const animation = span.animate([
+                { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                { transform: `translateY(-120vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ], {
+                duration: 3000 + Math.random() * 2000,
+                easing: 'linear'
+            });
+
+            animation.onfinish = () => span.remove();
+        }
+    </script>
+</body>
+</html>
+
+```
